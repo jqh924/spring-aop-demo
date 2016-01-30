@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util.xsd">
+
+    <bean id="allMethodAdvisor" class="advisor.MyStaticMethodMatcherPointcutAdvisor">
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+
+    <bean id="advicedMethodAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="advicedMethodPointcut"/>
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+    <bean id="advicedMethodPointcut" class="pointcut.MyStaticMethodMatcherPointcut"/>
+
+    <bean id="regexpAdvicedMethodAdvisor"
+          class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="patterns">
+            <list>
+                <value>service\.iml\..*adviced.*</value>
+                <value>service\.impl\..*adviced.*</value>
+            </list>
+        </property>
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+
+
+    <bean id="dynamicPointcutAdvisor"
+          class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="myDynamicPointcut"/>
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+
+    <bean id="myDynamicPointcut" class="pointcut.MyDynamicPointcut"/>
+
+
+    <bean id="controlFlowAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="controlFlowPointcut"/>
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+
+    <bean id="controlFlowPointcut" class="org.springframework.aop.support.ControlFlowPointcut">
+        <constructor-arg type="java.lang.Class" value="delegate.ServiceDelegate"/>
+        <constructor-arg type="java.lang.String" value="service"/>
+    </bean>
+
+    <bean id="composablePointcutAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="myComposablePointcut"/>
+        <property name="advice" ref="myMethodBeforeAdvice"/>
+    </bean>
+
+    <bean id="myComposablePointcut" class="pointcut.MyComposablePointcut">
+        <property name="pointcut" ref="myDynamicPointcut"/>
+    </bean>
+</beans>

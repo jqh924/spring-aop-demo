@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="advice.xml"/>
+    <import resource="advisor.xml"/>
+    <import resource="bean.xml"/>
+
+    <bean id="allMethodAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="allMethodAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service1" parent="allMethodAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+
+    <bean id="advicedMethodAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="advicedMethodAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service2" parent="advicedMethodAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+    <bean id="regexpAdvicedMethodAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="regexpAdvicedMethodAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service3" parent="regexpAdvicedMethodAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+    <bean id="dynamicPointcutAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="dynamicPointcutAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service4" parent="dynamicPointcutAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+
+    <bean id="controlFlowAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="controlFlowAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service5" parent="controlFlowAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+    <bean id="composablePointcutAdvisorConfig" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames" value="composablePointcutAdvisor"></property>
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="service6" parent="composablePointcutAdvisorConfig">
+        <property name="target" ref="serviceImpl"></property>
+    </bean>
+
+</beans>
